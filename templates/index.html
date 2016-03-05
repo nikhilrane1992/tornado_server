@@ -21,8 +21,6 @@
     </div>
   </div>
 
-  <textarea rows="4" cols="50" ng-model="name"></textarea><button ng-click="addinList()">ADD IN LIST</button>
-
   <div class="popup-box chat-popup" id="qnimate">
     <div class="popup-head">
       <div class="popup-head-left pull-left"><img src="https://lh3.googleusercontent.com/-f-0dPtN2pYY/AAAAAAAAAAI/AAAAAAAAAOI/JatRVeXtGuM/s60-p-rw-no/photo.jpg" alt="iamgurdeeposahan">Nikhil Rane</div>
@@ -42,14 +40,14 @@
       </div>
     </div>
     <div class="popup-messages">
-      <div class="direct-chat-messages" ng-repeat="obj in chatMessagesList">
+      <div class="direct-chat-messages" ng-repeat="(date, msgList) in chatMessagesList | groupBy:'date'">
         <div class="chat-box-single-line">
-          <abbr class="timestamp">{{!obj.date}}</abbr>
+          <abbr class="timestamp">{{!date | date:'MMM dd, yyyy'}}</abbr>
         </div>
 
 
         <!-- Message. Default to the left -->
-        <div class="direct-chat-msg doted-border" ng-repeat="msg in obj.msgList">
+        <div class="direct-chat-msg doted-border" ng-repeat="msg in msgList">
           <div class="direct-chat-info clearfix">
             <span class="direct-chat-name pull-left">{{!msg.chatName}}</span>
           </div>
@@ -59,7 +57,7 @@
             {{!msg.message}}
           </div>
           <div class="direct-chat-info clearfix">
-            <span class="direct-chat-timestamp pull-right">{{!msg.time}}</span>
+            <span class="direct-chat-timestamp pull-right">{{!msg.date | date:'h:mm:ss a'}}</span>
           </div>
           <div class="direct-chat-info clearfix">
             <span class="direct-chat-img-reply-small pull-left">
@@ -81,7 +79,7 @@
         <!-- Message. Default to the left -->
         <div class="direct-chat-msg doted-border">
           <div class="direct-chat-info clearfix">
-            <span class="direct-chat-name pull-left">Osahan</span>
+            <span class="direct-chat-name pull-left">Nikhil</span>
           </div>
           <!-- /.direct-chat-info -->
           <img alt="" src="" class="direct-chat-img"><!-- /.direct-chat-img -->
@@ -93,7 +91,7 @@
           </div>
           <div class="direct-chat-info clearfix">
             <img alt="" src="" class="direct-chat-img big-round">
-            <span class="direct-chat-reply-name">Singh</span>
+            <span class="direct-chat-reply-name">Nik</span>
           </div>
           <!-- /.direct-chat-text -->
         </div>
@@ -103,12 +101,12 @@
 
     </div>
     <div class="popup-messages-footer">
-      <textarea id="status_message" placeholder="Type a message..." rows="10" cols="40" name="message"></textarea>
+      <textarea id="status_message" placeholder="Type a message..." rows="10" cols="40" name="message" ng-model="statusMessage"></textarea>
       <div class="btn-footer">
         <button class="bg_none"><i class="glyphicon glyphicon-film"></i> </button>
         <button class="bg_none"><i class="glyphicon glyphicon-camera"></i> </button>
         <button class="bg_none"><i class="glyphicon glyphicon-paperclip"></i> </button>
-        <button class="bg_none pull-right"><i class="glyphicon glyphicon-thumbs-up"></i> </button>
+        <button class="bg_none pull-right" ng-click="addinList()"><i class="glyphicon glyphicon-thumbs-up"></i> </button>
       </div>
     </div>
   </div>
@@ -119,5 +117,6 @@
   <script src="static/js/loading-bar.js"></script>
   <script src="static/js/ui-bootstrap-tpls-1.1.2.min.js"></script>
   <script src="static/js/custom.js"></script>
+  <script src="static/js/underscore-min.js"></script>
 </body>
 </html>

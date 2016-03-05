@@ -9,15 +9,25 @@ $("#addClass").click(function () {
   })
 
 
-angular.module("testApp", ['ui.bootstrap', 'angular-loading-bar'])
-.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+app = angular.module("testApp", ['ui.bootstrap', 'angular-loading-bar'])
+
+
+app.filter('groupBy', function() {
+    return _.memoize(function(items, field) {
+            return _.groupBy(items, field);
+        }
+    );
+});
+
+app.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.includeSpinner = true;
   }])
-.controller("testCtrl", function($scope,$http){
+
+app.controller("testCtrl", function($scope,$http){
 
 	$scope.chatMessagesList = [];
 
-$scope.name = ""
+	$scope.statusMessage = "";
 
     
 	// ------------------ websocket starts--------------------------
@@ -58,9 +68,23 @@ $scope.name = ""
 // ---------------------- websocket ends----------------------
 
 $scope.addinList = function(){
-	$scope.chatMessagesList.push($scope.name);
+	date = new Date();
+	obj = {"date": date, "chatName": "Nikhil", "message": $scope.statusMessage, "chatReplyName": "Singh"}
+	// $scope.chatMessagesList.push($scope.obj);
+	$scope.statusMessage = "";
+	$http.post('/tornado/webSocket/send_json/',obj).
+	success(function(data, status, headers, config) {
+		console.log(data);
+	}).
+	error(function(data, status, headers, config) {
+		console.log(data);
+	});
 }
 
+
+$scope.sendMessageToServer = function(bankNameTxt){
+        
+    }
 
     var init = function(){
         WebSocketTest();
