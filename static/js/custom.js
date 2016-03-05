@@ -15,6 +15,10 @@ angular.module("testApp", ['ui.bootstrap', 'angular-loading-bar'])
   }])
 .controller("testCtrl", function($scope,$http){
 
+	$scope.chatMessagesList = [];
+
+$scope.name = ""
+
     
 	// ------------------ websocket starts--------------------------
 	var WebSocketTest = function() {
@@ -36,6 +40,8 @@ angular.module("testApp", ['ui.bootstrap', 'angular-loading-bar'])
 			{
 				var received_msg = JSON.parse(evt.data);
 				console.log(received_msg);
+				$scope.chatMessagesList.push(received_msg);
+				console.log($scope.chatMessagesList);
 			};
 
 			ws.onclose = function(){
@@ -48,9 +54,12 @@ angular.module("testApp", ['ui.bootstrap', 'angular-loading-bar'])
 		}
 	};
 
+
 // ---------------------- websocket ends----------------------
 
-
+$scope.addinList = function(){
+	$scope.chatMessagesList.push($scope.name);
+}
 
 
     var init = function(){
