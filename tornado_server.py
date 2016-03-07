@@ -3,6 +3,8 @@ import tornado.web
 import tornado.websocket
 import os
 from globalVariables import clientTypesAndClients
+import json
+from pymongo import MongoClient
 
 
 dirname = os.path.dirname(__file__)
@@ -11,6 +13,10 @@ STATIC_PATH = os.path.join(dirname, 'static')
 TEMPLATE_PATH = os.path.join(dirname, 'templates')
 PORT = 8888
 
+
+mongoPort = 27017
+client = MongoClient('localhost', mongoPort)
+db = client.chat_system
 
 
 class MainHandler(tornado.websocket.WebSocketHandler):
@@ -29,6 +35,7 @@ class GetJsonHandler(tornado.websocket.WebSocketHandler):
 		print "NEW ORDERS TABLE SERVER RECEIVED A MESSAGE!!!!!!!!!!!!!!!!! : %s" % (message)
 
 	def json_test(self, message):
+		print "Message====",message
 		self.write_message(message)
 
 	def on_close(self):
@@ -41,7 +48,9 @@ class JsonTestHandler(tornado.web.RequestHandler):
 
         if data != None:
             print "DATA RECEIVED BY ORDER PLACED HANDLER"
-            print str(data)
+            print data
+            data = json.loads(data)
+            data.update({"receiver": True, "sender": False})
         else:
             data = {'status':False,'validation':'No data found...'}
             data = json.dumps(data);

@@ -40,14 +40,16 @@
       </div>
     </div>
     <div class="popup-messages">
-      <div class="direct-chat-messages" ng-repeat="(date, msgList) in chatMessagesList | groupBy:'date'">
+    <div ng-repeat="(date, msgList) in chatMessagesList | groupBy:'groupByDate'">
+      <div class="direct-chat-messages">
         <div class="chat-box-single-line">
           <abbr class="timestamp">{{!date | date:'MMM dd, yyyy'}}</abbr>
         </div>
 
 
         <!-- Message. Default to the left -->
-        <div class="direct-chat-msg doted-border" ng-repeat="msg in msgList">
+        <div ng-repeat="msg in msgList">
+        <div class="direct-chat-msg doted-border" ng-show="msg.sender && !msg.receiver">
           <div class="direct-chat-info clearfix">
             <span class="direct-chat-name pull-left">{{!msg.chatName}}</span>
           </div>
@@ -70,35 +72,37 @@
         <!-- /.direct-chat-msg -->
 
 
-        <div class="chat-box-single-line">
+        <!-- <div class="chat-box-single-line">
           <abbr class="timestamp">October 9th, 2015</abbr>
         </div>
-
+ -->
 
 
         <!-- Message. Default to the left -->
-        <div class="direct-chat-msg doted-border">
+        <div class="direct-chat-msg doted-border" ng-show="msg.receiver && msg.sender==false">
           <div class="direct-chat-info clearfix">
-            <span class="direct-chat-name pull-left">Nikhil</span>
+            <span class="direct-chat-name pull-left">{{!msg.chatName}}</span>
           </div>
           <!-- /.direct-chat-info -->
           <img alt="" src="" class="direct-chat-img"><!-- /.direct-chat-img -->
           <div class="direct-chat-text">
-            Hey bro, how’s everything going ?
+            {{!msg.message}}
           </div>
           <div class="direct-chat-info clearfix">
-            <span class="direct-chat-timestamp pull-right">3.36 PM</span>
+            <span class="direct-chat-timestamp pull-right">{{!msg.date | date:'h:mm:ss a'}}</span>
           </div>
           <div class="direct-chat-info clearfix">
             <img alt="" src="" class="direct-chat-img big-round">
-            <span class="direct-chat-reply-name">Nik</span>
+            <span class="direct-chat-reply-name">{{!msg.chatReplyName}}</span>
           </div>
           <!-- /.direct-chat-text -->
         </div>
         <!-- /.direct-chat-msg -->
+        </div>
 
       </div>
 
+    </div>
     </div>
     <div class="popup-messages-footer">
       <textarea id="status_message" placeholder="Type a message..." rows="10" cols="40" name="message" ng-model="statusMessage"></textarea>

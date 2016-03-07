@@ -23,7 +23,7 @@ app.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.includeSpinner = true;
   }])
 
-app.controller("testCtrl", function($scope,$http){
+app.controller("testCtrl", function($scope,$http, $filter){
 
 	$scope.chatMessagesList = [];
 
@@ -69,8 +69,8 @@ app.controller("testCtrl", function($scope,$http){
 
 $scope.addinList = function(){
 	date = new Date();
-	obj = {"date": date, "chatName": "Nikhil", "message": $scope.statusMessage, "chatReplyName": "Singh"}
-	// $scope.chatMessagesList.push($scope.obj);
+	obj = {"date": date, "chatName": "Nikhil", "message": $scope.statusMessage, "chatReplyName": "Singh", "groupByDate": $filter('date')(date, 'MMM dd, yyyy'), "sender": true, "receiver":false}
+	$scope.chatMessagesList.push(obj);
 	$scope.statusMessage = "";
 	$http.post('/tornado/webSocket/send_json/',obj).
 	success(function(data, status, headers, config) {
