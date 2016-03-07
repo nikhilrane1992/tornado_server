@@ -1,2 +1,2 @@
-# tornado_server
-Tornado server (chat application)
+# Simple chat application using.
+Create simple chat application using Tornado server, AngularJS and Bootstrap.
